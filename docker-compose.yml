@@ -1,0 +1,46 @@
+# docker-compose.yml
+# =====================================================================
+# Les variables ${...} sont lues dans le fichier .env avant l'interpolation.
+# =====================================================================
+
+services:
+  # ───────────────────────────────────────────────────────── PostgreSQL
+  postgres:
+    image: postgres:15
+    container_name: jobtech_postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB:     ${POSTGRES_DB}
+      POSTGRES_USER:   ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - hadoop_net
+
+  # ───────────────────────────────────────────────────────── Adminer
+  adminer:
+    image: adminer
+    container_name: jobtech_adminer
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - hadoop_net
+
+# ───────────────────────────────────────────────────────── Volumes & Réseau
+volumes:
+  postgres_data:
+
+networks:
+  hadoop_net:
+    driver: bridge
