@@ -34,13 +34,13 @@ class StackOverflowExtractor(BaseScrapeExtractor):
         Returns:
             pd.DataFrame: Données d'enquête simulées
         """
-        self.logger.info(f"📊 Génération de {num_responses} réponses Stack Overflow Survey {year}...")
+        self.logger.info(f"Génération de {num_responses} réponses Stack Overflow Survey {year}...")
         
         survey_data = self._generate_developer_survey_data(num_responses, year)
         
         if not survey_data.empty:
             self.save_raw_data(survey_data, "stackoverflow")
-            self.logger.info(f"✅ StackOverflow: {len(survey_data)} réponses générées")
+            self.logger.info(f"StackOverflow: {len(survey_data)} réponses générées")
         
         return survey_data
 
@@ -181,11 +181,11 @@ class GoogleTrendsExtractor(BaseScrapeExtractor):
         
         if not self.pytrends_available:
             # Générer des données simulées si PyTrends n'est pas disponible
-            self.logger.info("📈 Génération de données Google Trends simulées...")
+            self.logger.info("Génération de données Google Trends simulées...")
             return self._generate_simulated_trends_data(keyword_groups, regions)
         
         for region in regions:
-            self.logger.info(f"📈 Extraction Google Trends pour région: {region or 'Global'}")
+            self.logger.info(f"Extraction Google Trends pour région: {region or 'Global'}")
             
             for group in keyword_groups:
                 try:
@@ -203,7 +203,7 @@ class GoogleTrendsExtractor(BaseScrapeExtractor):
         if all_trends:
             result = pd.concat(all_trends, ignore_index=True)
             self.save_raw_data(result, "google_trends")
-            self.logger.info(f"✅ Google Trends: {len(result)} points de données extraits")
+            self.logger.info(f"Google Trends: {len(result)} points de données extraits")
             return result
         
         return pd.DataFrame()
@@ -302,7 +302,7 @@ class IndeedRSSExtractor(BaseScrapeExtractor):
         all_jobs = []
         
         for country in countries:
-            self.logger.info(f"📰 Extraction Indeed RSS pour {country.upper()}...")
+            self.logger.info(f"Extraction Indeed RSS pour {country.upper()}...")
             
             for term in search_terms:
                 jobs = self._extract_jobs_rss(country, term)
@@ -316,7 +316,7 @@ class IndeedRSSExtractor(BaseScrapeExtractor):
             # Supprimer les doublons basés sur le titre + entreprise
             result = result.drop_duplicates(subset=['title', 'company'], keep='first')
             self.save_raw_data(result, "indeed")
-            self.logger.info(f"✅ Indeed RSS: {len(result)} offres extraites")
+            self.logger.info(f"Indeed RSS: {len(result)} offres extraites")
             return result
         
         return pd.DataFrame()

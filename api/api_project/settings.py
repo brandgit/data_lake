@@ -1,6 +1,4 @@
-"""
-Django settings for JobTech API project.
-"""
+
 
 import os
 from pathlib import Path

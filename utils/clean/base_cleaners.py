@@ -280,7 +280,7 @@ class BaseDataCleaner:
         
         # Sauvegarder avec encodage UTF-8
         df.to_csv(filepath, index=False, encoding='utf-8')
-        self.logger.info(f"✅ Sauvegardé: {filepath} ({len(df)} lignes)")
+        self.logger.info(f"Sauvegardé: {filepath} ({len(df)} lignes)")
         
         return filepath
     
@@ -298,27 +298,27 @@ class DataCleaner(BaseDataCleaner):
     
     def clean_all_sources(self) -> Dict[str, pd.DataFrame]:
         """Nettoie toutes les sources de données disponibles"""
-        self.logger.info("🧹 Début du nettoyage de toutes les sources...")
+        self.logger.info("Début du nettoyage de toutes les sources...")
         
         cleaned_data = {}
         sources = ['adzuna', 'github', 'kaggle', 'google_trends', 'stackoverflow', 'remoteok', 'indeed']
         
         for source in sources:
             try:
-                self.logger.info(f"🔧 Nettoyage de {source}...")
+                self.logger.info(f"Nettoyage de {source}...")
                 cleaned_df = self.clean_data(source)
                 
                 if not cleaned_df.empty:
                     cleaned_data[source] = cleaned_df
-                    self.logger.info(f"✅ {source}: {len(cleaned_df)} lignes nettoyées")
+                    self.logger.info(f"{source}: {len(cleaned_df)} lignes nettoyées")
                 else:
-                    self.logger.warning(f"❌ {source}: Aucune donnée après nettoyage")
+                    self.logger.warning(f"{source}: Aucune donnée après nettoyage")
                     
             except Exception as e:
                 self.logger.error(f"Erreur lors du nettoyage de {source}: {e}")
                 continue
         
-        self.logger.info(f"🎯 Nettoyage terminé: {len(cleaned_data)} sources traitées")
+        self.logger.info(f"Nettoyage terminé: {len(cleaned_data)} sources traitées")
         return cleaned_data
     
     def clean_data(self, source: str) -> pd.DataFrame:

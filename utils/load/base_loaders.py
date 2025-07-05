@@ -123,10 +123,10 @@ class BaseLoader:
             # Test de connexion
             with self.engine.connect() as conn:
                 conn.execute(text("SELECT 1"))
-            logger.info(f"✅ Connexion PostgreSQL établie: {self.config.host}:{self.config.port}/{self.config.database}")
+            logger.info(f"Connexion PostgreSQL établie: {self.config.host}:{self.config.port}/{self.config.database}")
             return True
         except Exception as e:
-            logger.error(f"❌ Erreur de connexion PostgreSQL: {e}")
+            logger.error(f"Erreur de connexion PostgreSQL: {e}")
             return False
     
     def execute_sql(self, sql: str) -> bool:
@@ -137,7 +137,7 @@ class BaseLoader:
                 conn.commit()
             return True
         except Exception as e:
-            logger.error(f"❌ Erreur SQL: {e}")
+            logger.error(f"Erreur SQL: {e}")
             return False
     
     def execute_sql_file(self, sql_file_path: Path) -> bool:
@@ -147,7 +147,7 @@ class BaseLoader:
                 sql_content = f.read()
             return self.execute_sql(sql_content)
         except Exception as e:
-            logger.error(f"❌ Erreur lors de l'exécution du fichier SQL {sql_file_path}: {e}")
+            logger.error(f"Erreur lors de l'exécution du fichier SQL {sql_file_path}: {e}")
             return False
     
     def load_dataframe(self, df: pd.DataFrame, table_name: str, 
@@ -166,10 +166,10 @@ class BaseLoader:
                            index=False, chunksize=chunksize)
             
             stats.inserted_rows = len(df_clean)
-            logger.info(f"✅ {table_name}: {stats.inserted_rows} lignes chargées")
+            logger.info(f"{table_name}: {stats.inserted_rows} lignes chargées")
             
         except Exception as e:
-            logger.error(f"❌ Erreur lors du chargement de {table_name}: {e}")
+            logger.error(f"Erreur lors du chargement de {table_name}: {e}")
             stats.error_rows = len(df)
         
         stats.end()
@@ -190,7 +190,7 @@ class BaseLoader:
             return self.load_dataframe(df, table_name, if_exists)
             
         except Exception as e:
-            logger.error(f"❌ Erreur lors du chargement du fichier {csv_file}: {e}")
+            logger.error(f"Erreur lors du chargement du fichier {csv_file}: {e}")
             stats = LoadingStats(table_name=table_name)
             stats.error_rows = 1
             return stats
@@ -202,7 +202,7 @@ class BaseLoader:
                 result = conn.execute(text(f"SELECT COUNT(*) FROM {table_name}"))
                 return result.scalar()
         except Exception as e:
-            logger.error(f"❌ Erreur lors du comptage de la table {table_name}: {e}")
+            logger.error(f"Erreur lors du comptage de la table {table_name}: {e}")
             return 0
     
     def table_exists(self, table_name: str) -> bool:
@@ -217,7 +217,7 @@ class BaseLoader:
                 """), {"table_name": table_name})
                 return result.scalar()
         except Exception as e:
-            logger.error(f"❌ Erreur lors de la vérification de la table {table_name}: {e}")
+            logger.error(f"Erreur lors de la vérification de la table {table_name}: {e}")
             return False
     
     def generate_loading_report(self) -> Dict:
@@ -252,14 +252,14 @@ class BaseLoader:
     def print_loading_summary(self):
         """Affiche un résumé du chargement"""
         print("\n" + "="*60)
-        print("📊 RAPPORT DE CHARGEMENT DWH")
+        print("RAPPORT DE CHARGEMENT DWH")
         print("="*60)
         
         for stat in self.stats:
             print(f"  {stat}")
         
         report = self.generate_loading_report()
-        print(f"\n📈 Total: {report['total_rows_inserted']}/{report['total_rows_processed']} lignes "
+        print(f"\nTotal: {report['total_rows_inserted']}/{report['total_rows_processed']} lignes "
               f"({report['overall_success_rate']:.1f}% succès)")
-        print(f"🗄️ Base de données: {report['database']}")
+        print(f"Base de données: {report['database']}")
         print("="*60) 

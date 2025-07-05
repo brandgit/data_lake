@@ -1,6 +1,4 @@
-"""
-Serializers for JobTech API - Data Warehouse PostgreSQL
-"""
+
 
 from rest_framework import serializers
 from .models import (

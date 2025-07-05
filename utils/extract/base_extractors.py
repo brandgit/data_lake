@@ -91,7 +91,7 @@ class BaseAPIExtractor:
         
         # Sauvegarder
         df_with_meta.to_csv(filepath, index=False, encoding='utf-8')
-        self.logger.info(f"✅ Sauvegardé: {filepath} ({len(df)} lignes)")
+        self.logger.info(f"Sauvegardé: {filepath} ({len(df)} lignes)")
         
         return filepath
     
@@ -189,7 +189,7 @@ class BaseScrapeExtractor:
         
         # Sauvegarder
         df_with_meta.to_csv(filepath, index=False, encoding='utf-8')
-        self.logger.info(f"✅ Sauvegardé: {filepath} ({len(df)} lignes)")
+        self.logger.info(f"Sauvegardé: {filepath} ({len(df)} lignes)")
         
         return filepath
     

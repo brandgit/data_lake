@@ -1,6 +1,4 @@
-"""
-API Views for JobTech - Data Warehouse PostgreSQL
-"""
+
 
 from rest_framework import viewsets, status, filters, views
 from rest_framework.decorators import action, api_view, permission_classes

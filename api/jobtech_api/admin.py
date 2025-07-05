@@ -1,6 +1,4 @@
-"""
-Admin configuration for JobTech API - Data Warehouse PostgreSQL
-"""
+
 
 from django.contrib import admin
 from .models import (

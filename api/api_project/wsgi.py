@@ -1,6 +1,4 @@
-"""
-WSGI config for JobTech API project.
-"""
+
 
 import os
 

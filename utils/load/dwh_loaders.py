@@ -49,7 +49,7 @@ class PostgreSQLDWHLoader(BaseLoader):
     
     def create_schema(self) -> bool:
         """Crée le schéma complet du Data Warehouse"""
-        print("🔧 Création du schéma DWH...")
+        print("Création du schéma DWH...")
         
         schema_sql = """
         -- Schéma JobTech Data Warehouse
@@ -212,15 +212,15 @@ class PostgreSQLDWHLoader(BaseLoader):
         success = self.execute_sql(schema_sql)
         if success:
             self.schema_created = True
-            print("✅ Schéma DWH créé avec succès")
+            print("Schéma DWH créé avec succès")
         else:
-            print("❌ Erreur lors de la création du schéma")
+            print("Erreur lors de la création du schéma")
         
         return success
     
     def populate_dimension_tables(self) -> bool:
         """Peuple les tables de dimensions avec des données de référence"""
-        print("🏷️ Peuplement des tables de dimensions...")
+        print("Peuplement des tables de dimensions...")
         
         success = True
         
@@ -286,19 +286,19 @@ class PostgreSQLDWHLoader(BaseLoader):
         for name, sql in queries:
             try:
                 if self.execute_sql(sql):
-                    print(f"  ✅ {name} peuplés")
+                    print(f"   {name} peuplés")
                 else:
-                    print(f"  ❌ Erreur lors du peuplement de {name}")
+                    print(f"   Erreur lors du peuplement de {name}")
                     success = False
             except Exception as e:
-                print(f"  ❌ Erreur {name}: {e}")
+                print(f"   Erreur {name}: {e}")
                 success = False
         
         return success
     
     def load_all_data(self) -> bool:
         """Charge toutes les données dans le DWH"""
-        print("📦 Chargement de toutes les données...")
+        print("Chargement de toutes les données...")
         
         success = True
         
@@ -307,11 +307,11 @@ class PostgreSQLDWHLoader(BaseLoader):
         
         # Charger chaque type de données
         loaders_methods = [
-            ("📋 Emplois", self.jobs_loader.load_all_jobs),
-            ("🐙 GitHub", self.github_loader.load_github_data),
-            ("📈 Google Trends", self.trends_loader.load_trends_data),
-            ("💻 StackOverflow", self.stackoverflow_loader.load_stackoverflow_data),
-            ("🔬 Kaggle", self.kaggle_loader.load_kaggle_data)
+            ("Emplois", self.jobs_loader.load_all_jobs),
+            ("GitHub", self.github_loader.load_github_data),
+            ("Google Trends", self.trends_loader.load_trends_data),
+            ("StackOverflow", self.stackoverflow_loader.load_stackoverflow_data),
+            ("Kaggle", self.kaggle_loader.load_kaggle_data)
         ]
         
         for name, method in loaders_methods:
@@ -319,10 +319,10 @@ class PostgreSQLDWHLoader(BaseLoader):
             try:
                 result = method()
                 if not result:
-                    print(f"⚠️ Avertissement: {name} - chargement partiel ou échoué")
+                    print(f"Avertissement: {name} - chargement partiel ou échoué")
                     success = False
             except Exception as e:
-                print(f"❌ Erreur {name}: {e}")
+                print(f"Erreur {name}: {e}")
                 success = False
         
         # Collecter toutes les statistiques
@@ -334,14 +334,14 @@ class PostgreSQLDWHLoader(BaseLoader):
         
         # Peupler les dimensions dynamiques après le chargement des données
         if success:
-            print("\n🔄 Peuplement des dimensions dynamiques...")
+            print("\nPeuplement des dimensions dynamiques...")
             success &= self.populate_dynamic_dimensions()
         
         return success
     
     def populate_dynamic_dimensions(self) -> bool:
         """Peuple les dimensions d_company et d_skill à partir des données réelles"""
-        print("🔄 Peuplement des dimensions dynamiques...")
+        print("Peuplement des dimensions dynamiques...")
         
         success = True
         
@@ -414,12 +414,12 @@ class PostgreSQLDWHLoader(BaseLoader):
         for name, sql in queries:
             try:
                 if self.execute_sql(sql):
-                    print(f"  ✅ {name} peuplées depuis les données")
+                    print(f"   {name} peuplées depuis les données")
                 else:
-                    print(f"  ❌ Erreur lors du peuplement de {name}")
+                    print(f"   Erreur lors du peuplement de {name}")
                     success = False
             except Exception as e:
-                print(f"  ❌ Erreur {name}: {e}")
+                print(f"   Erreur {name}: {e}")
                 success = False
         
         return success
@@ -481,7 +481,7 @@ class JobsLoader(BaseLoader):
                 df_mapped['salary_avg'] = df_mapped['salary_avg'].fillna(0)
             
             stats = self.load_dataframe(df_mapped, 'jobs', if_exists='append')
-            print(f"  ✅ Adzuna: {stats.inserted_rows} emplois chargés")
+            print(f"   Adzuna: {stats.inserted_rows} emplois chargés")
             return True
             
         except Exception as e:
@@ -539,7 +539,7 @@ class JobsLoader(BaseLoader):
                     df_mapped[col] = pd.to_numeric(df_mapped[col], errors='coerce')
             
             stats = self.load_dataframe(df_mapped, 'jobs', if_exists='append')
-            print(f"  ✅ RemoteOK: {stats.inserted_rows} emplois chargés")
+            print(f"   RemoteOK: {stats.inserted_rows} emplois chargés")
             return True
             
         except Exception as e:
@@ -591,7 +591,7 @@ class GitHubLoader(BaseLoader):
                     df_mapped[col] = pd.to_numeric(df_mapped[col], errors='coerce').fillna(0).astype(int)
             
             stats = self.load_dataframe(df_mapped, 'github_repos', if_exists='append')
-            print(f"  ✅ GitHub: {stats.inserted_rows} repositories chargés")
+            print(f"   GitHub: {stats.inserted_rows} repositories chargés")
             return True
             
         except Exception as e:
@@ -643,7 +643,7 @@ class GoogleTrendsLoader(BaseLoader):
                 df_mapped = df_mapped.drop_duplicates(subset=['keyword', 'date', 'country'])
             
             stats = self.load_dataframe(df_mapped, 'google_trends', if_exists='append')
-            print(f"  ✅ Google Trends: {stats.inserted_rows} tendances chargées")
+            print(f"   Google Trends: {stats.inserted_rows} tendances chargées")
             return True
             
         except Exception as e:
@@ -696,7 +696,7 @@ class StackOverflowLoader(BaseLoader):
                 df_mapped['years_coding_pro'] = df_mapped['years_coding_pro'].astype(str)
             
             stats = self.load_dataframe(df_mapped, 'developers', if_exists='append')
-            print(f"  ✅ StackOverflow: {stats.inserted_rows} développeurs chargés")
+            print(f"  StackOverflow: {stats.inserted_rows} développeurs chargés")
             return True
             
         except Exception as e:
@@ -746,7 +746,7 @@ class KaggleLoader(BaseLoader):
                 df_mapped['experience_years'] = pd.to_numeric(df_mapped['experience_years'], errors='coerce').fillna(0).astype(int)
             
             stats = self.load_dataframe(df_mapped, 'kaggle_datasets', if_exists='append')
-            print(f"  ✅ Kaggle: {stats.inserted_rows} datasets chargés")
+            print(f"   Kaggle: {stats.inserted_rows} datasets chargés")
             return True
             
         except Exception as e:

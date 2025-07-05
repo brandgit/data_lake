@@ -1,6 +1,4 @@
-"""
-Models for JobTech API - Correspondance avec les tables du Data Warehouse PostgreSQL
-"""
+
 
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator

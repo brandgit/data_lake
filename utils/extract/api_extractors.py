@@ -40,7 +40,7 @@ class AdzunaExtractor(BaseAPIExtractor):
         all_jobs = []
 
         for country in countries:
-            self.logger.info(f"🔍 Extraction Adzuna pour {country.upper()}...")
+            self.logger.info(f"Extraction Adzuna pour {country.upper()}...")
             jobs = self._extract_jobs_for_country(country)
             if not jobs.empty:
                 all_jobs.append(jobs)
@@ -49,7 +49,7 @@ class AdzunaExtractor(BaseAPIExtractor):
         if all_jobs:
             result = pd.concat(all_jobs, ignore_index=True)
             self.save_raw_data(result, "adzuna")
-            self.logger.info(f"✅ Adzuna: {len(result)} offres extraites")
+            self.logger.info(f"Adzuna: {len(result)} offres extraites")
             return result
 
         return pd.DataFrame()
@@ -115,7 +115,7 @@ class GitHubExtractor(BaseAPIExtractor):
         all_repos = []
 
         for language in languages:
-            self.logger.info(f"🐙 Extraction GitHub pour {language}...")
+            self.logger.info(f"Extraction GitHub pour {language}...")
             repos = self._extract_trending_repos(language, days)
             if not repos.empty:
                 all_repos.append(repos)
@@ -126,7 +126,7 @@ class GitHubExtractor(BaseAPIExtractor):
             # Supprimer les doublons basés sur l'ID
             result = result.drop_duplicates(subset=['id'], keep='first')
             self.save_raw_data(result, "github")
-            self.logger.info(f"✅ GitHub: {len(result)} repositories extraits")
+            self.logger.info(f"GitHub: {len(result)} repositories extraits")
             return result
 
         return pd.DataFrame()
@@ -181,7 +181,7 @@ class RemoteOKExtractor(BaseAPIExtractor):
         Returns:
             pd.DataFrame: Données des offres remote
         """
-        self.logger.info("🌐 Extraction RemoteOK...")
+        self.logger.info("Extraction RemoteOK...")
         
         # RemoteOK ne nécessite pas d'auth mais a un format particulier
         url = self.base_url
@@ -217,7 +217,7 @@ class RemoteOKExtractor(BaseAPIExtractor):
             result = pd.DataFrame(jobs)
             if not result.empty:
                 self.save_raw_data(result, "remoteok")
-                self.logger.info(f"✅ RemoteOK: {len(result)} offres extraites")
+                self.logger.info(f"RemoteOK: {len(result)} offres extraites")
             
             return result
 
@@ -244,21 +244,12 @@ class KaggleExtractor(BaseAPIExtractor):
             os.environ['KAGGLE_KEY'] = self.config.KAGGLE_KEY
 
     def extract(self) -> pd.DataFrame:
-        """
-        Extrait et génère des données salariales basées sur des datasets Kaggle
         
-        Returns:
-            pd.DataFrame: Données salariales simulées
-        """
-        self.logger.info("💰 Génération de données salariales basées sur Kaggle...")
         
-        # Plutôt que de télécharger des datasets volumineux,
-        # on génère des données réalistes basées sur des études
         salary_data = self._generate_realistic_salary_data()
         
         if not salary_data.empty:
             self.save_raw_data(salary_data, "kaggle")
-            self.logger.info(f"✅ Kaggle: {len(salary_data)} données salariales générées")
         
         return salary_data
 

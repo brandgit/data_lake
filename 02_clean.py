@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 def main():
     """Point d'entrée principal pour le nettoyage"""
-    print("🧹 Démarrage du nettoyage des données JobTech...")
+    print("Démarrage du nettoyage des données JobTech...")
     logger.info("Début du processus de nettoyage JobTech")
     
     start_time = datetime.now()
@@ -40,165 +40,157 @@ def main():
             RemoteOKDataCleaner, IndeedDataCleaner, DataCleaner
         )
         
-        print("\n🔧 === NETTOYAGE DES SOURCES INDIVIDUELLES ===")
+        print("=== NETTOYAGE DES SOURCES INDIVIDUELLES ===")
         
         # 1. Nettoyage Adzuna (offres d'emploi)
-        print("\n🔍 Nettoyage Adzuna...")
+        print("Nettoyage Adzuna...")
         try:
             adzuna_cleaner = AdzunaDataCleaner()
             adzuna_clean = adzuna_cleaner.clean_data("adzuna")
             if not adzuna_clean.empty:
                 adzuna_cleaner.save_cleaned_data(adzuna_clean, "adzuna")
                 cleaning_results['adzuna'] = len(adzuna_clean)
-                print(f"✅ Adzuna: {len(adzuna_clean)} lignes nettoyées")
+                print(f"Adzuna: {len(adzuna_clean)} lignes nettoyées")
             else:
                 cleaning_results['adzuna'] = 0
-                print("❌ Adzuna: Aucune donnée après nettoyage")
+                print("Adzuna: Aucune donnée après nettoyage")
         except Exception as e:
             logger.error(f"Erreur Adzuna: {e}")
             cleaning_results['adzuna'] = 0
         
         # 2. Nettoyage GitHub (repositories)
-        print("\n🐙 Nettoyage GitHub...")
+        print("Nettoyage GitHub...")
         try:
             github_cleaner = GitHubDataCleaner()
             github_clean = github_cleaner.clean_data("github")
             if not github_clean.empty:
                 github_cleaner.save_cleaned_data(github_clean, "github")
                 cleaning_results['github'] = len(github_clean)
-                print(f"✅ GitHub: {len(github_clean)} lignes nettoyées")
+                print(f"GitHub: {len(github_clean)} lignes nettoyées")
             else:
                 cleaning_results['github'] = 0
-                print("❌ GitHub: Aucune donnée après nettoyage")
+                print("GitHub: Aucune donnée après nettoyage")
         except Exception as e:
             logger.error(f"Erreur GitHub: {e}")
             cleaning_results['github'] = 0
         
         # 3. Nettoyage Kaggle (données salariales)
-        print("\n💰 Nettoyage Kaggle...")
+        print("Nettoyage Kaggle...")
         try:
             kaggle_cleaner = KaggleDataCleaner()
             kaggle_clean = kaggle_cleaner.clean_data("kaggle")
             if not kaggle_clean.empty:
                 kaggle_cleaner.save_cleaned_data(kaggle_clean, "kaggle")
                 cleaning_results['kaggle'] = len(kaggle_clean)
-                print(f"✅ Kaggle: {len(kaggle_clean)} lignes nettoyées")
-            else:
-                cleaning_results['kaggle'] = 0
-                print("❌ Kaggle: Aucune donnée après nettoyage")
+                print(f"Kaggle: {len(kaggle_clean)} lignes nettoyées")
         except Exception as e:
             logger.error(f"Erreur Kaggle: {e}")
             cleaning_results['kaggle'] = 0
         
         # 4. Nettoyage Google Trends
-        print("\n📈 Nettoyage Google Trends...")
+        print("Nettoyage Google Trends...")
         try:
             trends_cleaner = GoogleTrendsDataCleaner()
             trends_clean = trends_cleaner.clean_data("google_trends")
             if not trends_clean.empty:
                 trends_cleaner.save_cleaned_data(trends_clean, "google_trends")
                 cleaning_results['google_trends'] = len(trends_clean)
-                print(f"✅ Google Trends: {len(trends_clean)} lignes nettoyées")
+                print(f"Google Trends: {len(trends_clean)} lignes nettoyées")
             else:
                 cleaning_results['google_trends'] = 0
-                print("❌ Google Trends: Aucune donnée après nettoyage")
+                print("Google Trends: Aucune donnée après nettoyage")
         except Exception as e:
             logger.error(f"Erreur Google Trends: {e}")
             cleaning_results['google_trends'] = 0
         
         # 5. Nettoyage StackOverflow
-        print("\n📊 Nettoyage StackOverflow...")
+        print("Nettoyage StackOverflow...")
         try:
             stackoverflow_cleaner = StackOverflowDataCleaner()
             stackoverflow_clean = stackoverflow_cleaner.clean_data("stackoverflow")
             if not stackoverflow_clean.empty:
                 stackoverflow_cleaner.save_cleaned_data(stackoverflow_clean, "stackoverflow")
                 cleaning_results['stackoverflow'] = len(stackoverflow_clean)
-                print(f"✅ StackOverflow: {len(stackoverflow_clean)} lignes nettoyées")
+                print(f"StackOverflow: {len(stackoverflow_clean)} lignes nettoyées")
             else:
                 cleaning_results['stackoverflow'] = 0
-                print("❌ StackOverflow: Aucune donnée après nettoyage")
+                print("StackOverflow: Aucune donnée après nettoyage")
         except Exception as e:
             logger.error(f"Erreur StackOverflow: {e}")
             cleaning_results['stackoverflow'] = 0
         
         # 6. Nettoyage RemoteOK
-        print("\n🌐 Nettoyage RemoteOK...")
+        print("Nettoyage RemoteOK...")
         try:
             remoteok_cleaner = RemoteOKDataCleaner()
             remoteok_clean = remoteok_cleaner.clean_data("remoteok")
             if not remoteok_clean.empty:
                 remoteok_cleaner.save_cleaned_data(remoteok_clean, "remoteok")
                 cleaning_results['remoteok'] = len(remoteok_clean)
-                print(f"✅ RemoteOK: {len(remoteok_clean)} lignes nettoyées")
+                print(f"RemoteOK: {len(remoteok_clean)} lignes nettoyées")
             else:
                 cleaning_results['remoteok'] = 0
-                print("❌ RemoteOK: Aucune donnée après nettoyage")
+                print("RemoteOK: Aucune donnée après nettoyage")
         except Exception as e:
             logger.error(f"Erreur RemoteOK: {e}")
             cleaning_results['remoteok'] = 0
         
         # 7. Nettoyage Indeed RSS
-        print("\n📰 Nettoyage Indeed RSS...")
+        print("Nettoyage Indeed RSS...")
         try:
             indeed_cleaner = IndeedDataCleaner()
             indeed_clean = indeed_cleaner.clean_data("indeed")
             if not indeed_clean.empty:
                 indeed_cleaner.save_cleaned_data(indeed_clean, "indeed")
                 cleaning_results['indeed'] = len(indeed_clean)
-                print(f"✅ Indeed: {len(indeed_clean)} lignes nettoyées")
-            else:
-                cleaning_results['indeed'] = 0
-                print("❌ Indeed: Aucune donnée après nettoyage")
+                print(f"Indeed: {len(indeed_clean)} lignes nettoyées")
         except Exception as e:
             logger.error(f"Erreur Indeed: {e}")
             cleaning_results['indeed'] = 0
         
         # 8. Export SQL consolidé
-        print("\n💾 === EXPORT SQL ===")
+        print("=== EXPORT SQL ===")
         try:
             export_to_sql(cleaning_results)
-            print("✅ Export SQL généré")
+            print("Export SQL généré")
         except Exception as e:
             logger.error(f"Erreur export SQL: {e}")
-            print(f"❌ Erreur export SQL: {e}")
+            print(f"Erreur export SQL: {e}")
         
         # Résumé final
         end_time = datetime.now()
         duration = end_time - start_time
         
-        print("\n" + "="*50)
-        print("📋 RÉSUMÉ DU NETTOYAGE")
+        print("RÉSUMÉ DU NETTOYAGE")
         print("="*50)
         
         total_cleaned = sum(cleaning_results.values())
         
         for source, count in cleaning_results.items():
-            status = "✅" if count > 0 else "❌"
-            print(f"{status} {source.capitalize()}: {count:,} lignes nettoyées")
+            print(f"{source.capitalize()}: {count:,} lignes nettoyées")
         
-        print(f"\n📊 Total: {total_cleaned:,} lignes nettoyées")
-        print(f"⏱️ Durée: {duration}")
-        print(f"📁 Données nettoyées dans: datasets_clean/")
+        print(f"Total: {total_cleaned:,} lignes nettoyées")
+        print(f"Durée: {duration}")
+        print(f"Données nettoyées dans: datasets_clean/")
         
         # Log final
         logger.info(f"Nettoyage terminé - {total_cleaned} lignes en {duration}")
         
         if total_cleaned > 0:
-            print("\n✅ Nettoyage terminé avec succès!")
+            print("Nettoyage terminé avec succès!")
             return 0
         else:
-            print("\n❌ Aucune donnée nettoyée!")
+            print("Aucune donnée nettoyée!")
             return 1
         
     except Exception as e:
         logger.error(f"Erreur critique lors du nettoyage: {e}")
-        print(f"\n💥 Erreur critique: {e}")
+        print(f"Erreur critique: {e}")
         return 1
 
 def export_to_sql(cleaning_results):
     """Exporte les données nettoyées en format SQL dans datasets_clean/"""
-    print("📄 Export des données nettoyées en format SQL...")
+    print("Export des données nettoyées en format SQL...")
     
     datasets_clean_dir = Path("datasets_clean")
     sql_output_file = datasets_clean_dir / "jobtech_data.sql"
@@ -358,8 +350,7 @@ ALTER TABLE tech_trends COMMENT = 'Tendances Google Trends pour technologies';
 
 """)
             
-            print(f"✅ Fichier SQL généré: {sql_output_file}")
-            print(f"📊 Structure complète pour {len(cleaning_results)} sources")
+            print(f"Fichier SQL généré: {sql_output_file}")
             
     except Exception as e:
         logger.error(f"Erreur génération SQL: {e}")

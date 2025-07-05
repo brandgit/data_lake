@@ -1,6 +1,4 @@
-"""
-URL configuration for JobTech API - Data Warehouse PostgreSQL
-"""
+
 
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
